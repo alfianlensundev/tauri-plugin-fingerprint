@@ -1,6 +1,6 @@
 {
   "name": "tauri-plugin-fingerprint",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Alfian Lensun",
   "description": "Tauri API for DigitalPersona U.are.U 4500 fingerprint readers",
   "license": "LGPL-2.1-or-later",
