@@ -9,11 +9,18 @@ macOS, Linux, dan Windows.
 
 ## Instalasi
 
-Tambahkan crate plugin ke `src-tauri/Cargo.toml` aplikasi:
+Tambahkan crate dari crates.io melalui folder `src-tauri` aplikasi:
+
+```bash
+cd src-tauri
+cargo add tauri-plugin-fingerprint
+```
+
+Atau tambahkan secara manual ke `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-fingerprint = { path = "../../tauri-plugin-fingerprint" }
+tauri-plugin-fingerprint = "0.1"
 ```
 
 Daftarkan plugin pada builder Tauri:
@@ -23,7 +30,13 @@ tauri::Builder::default()
     .plugin(tauri_plugin_fingerprint::init())
 ```
 
-Tambahkan package JavaScript, lalu beri capability `fingerprint:default`:
+Tambahkan package JavaScript:
+
+```bash
+npm install tauri-plugin-fingerprint
+```
+
+Kemudian beri capability `fingerprint:default`:
 
 ```json
 {
