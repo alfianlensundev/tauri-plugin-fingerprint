@@ -88,7 +88,7 @@ Add `fingerprint:default` to a capability file such as
 | --- | --- |
 | macOS | No additional driver is required. The vendor-class reader can normally be accessed without `sudo`. |
 | Linux | No additional driver is required. Add a udev permission rule for USB device `05ba:000a` and ensure `fprintd` is not using the reader. |
-| Windows | No proprietary driver is required. Associate the reader with the WinUSB driver included with Windows. |
+| Windows | No proprietary driver is required. Associate the reader with the WinUSB driver included with Windows. If the reader is not detected, follow the [Windows reader troubleshooting guide](docs/windows-reader-troubleshooting.md). |
 
 ## Usage
 
