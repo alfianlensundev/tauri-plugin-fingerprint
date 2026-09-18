@@ -1,10 +1,10 @@
 {
-  "productName": "tauri-app",
+  "productName": "Fingerprint Lab",
   "version": "0.1.0",
   "identifier": "com.tauri.dev",
   "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "bun run dev",
+    "beforeBuildCommand": "bun run build",
     "devUrl": "http://localhost:1420",
     "frontendDist": "../dist"
   },
@@ -16,10 +16,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 860,
+        "minHeight": 640,
+        "minWidth": 760,
         "resizable": true,
-        "title": "tauri-app",
-        "width": 800
+        "title": "Fingerprint Lab",
+        "width": 1280
       }
     ]
   },
