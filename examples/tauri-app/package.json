@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",
-    "tauri-plugin-fingerprint-api": "file:../../"
+    "tauri-plugin-fingerprint": "file:../../"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.0.0",

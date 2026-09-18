@@ -3,10 +3,14 @@ name = "tauri-plugin-fingerprint"
 version = "0.1.0"
 authors = ["Alfian Lensun"]
 description = "Tauri plugin for DigitalPersona U.are.U 4500 fingerprint readers"
+license = "LGPL-2.1-or-later"
+repository = "https://github.com/alfianlensundev/tauri-plugin-fingerprint"
+readme = "README.md"
 edition = "2021"
 rust-version = "1.77.2"
 exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
 links = "tauri-plugin-fingerprint"
+publish = ["crates-io"]
 
 [dependencies]
 tauri = { version = "2.11.3" }

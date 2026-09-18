@@ -7,7 +7,7 @@
     enroll,
     verify,
     identify,
-  } from 'tauri-plugin-fingerprint-api'
+  } from 'tauri-plugin-fingerprint'
 
 	let response = $state('')
 

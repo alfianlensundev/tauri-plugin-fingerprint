@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "tauri-plugin-fingerprint-api",
+      "name": "tauri-plugin-fingerprint",
       "dependencies": {
         "@tauri-apps/api": "^2.0.0",
       },

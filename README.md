@@ -37,7 +37,7 @@ Tambahkan package JavaScript, lalu beri capability `fingerprint:default`:
 preview PNG dalam bentuk data URL Base64 dan tidak diperlukan oleh matcher.
 
 ```ts
-import { enroll } from 'tauri-plugin-fingerprint-api'
+import { enroll } from 'tauri-plugin-fingerprint'
 
 const enrollment = await enroll({
   username: 'alfian',
@@ -80,7 +80,7 @@ saat disimpan serta batasi aksesnya.
 ## Verify memakai template dari server
 
 ```ts
-import { verify } from 'tauri-plugin-fingerprint-api'
+import { verify } from 'tauri-plugin-fingerprint'
 
 const response = await fetch('/api/fingerprints/alfian')
 const { template } = await response.json()
@@ -123,3 +123,39 @@ UI Tauri tetap responsif serta dua operasi tidak memakai reader bersamaan.
 
 Driver USB pada `src/uru4500.rs` merupakan port dari driver `uru4000` milik
 libfprint (LGPL-2.1+).
+
+## Lisensi
+
+Proyek ini didistribusikan dengan lisensi
+[GNU Lesser General Public License v2.1 or later](LICENSE)
+(`LGPL-2.1-or-later`).
+
+## Membuat GitHub Release
+
+Pastikan working tree bersih, `gh` sudah login, dan remote `origin` mengarah ke
+repository GitHub. Jalankan dengan argumen version:
+
+```bash
+./scripts/release.sh 0.2.0
+```
+
+Atau jalankan tanpa argumen untuk memasukkan version melalui prompt:
+
+```bash
+./scripts/release.sh
+```
+
+Skrip akan memperbarui version Cargo dan npm, menjalankan test/build, membuat
+commit release, membuat tag `v<version>`, mendorong commit dan tag ke `origin`,
+lalu membuat GitHub Release dengan release notes otomatis.
+
+Saat GitHub Release dipublikasikan, workflow `.github/workflows/publish.yml`
+akan memublikasikan crate ke crates.io dan package ke npm. Tambahkan repository
+secrets berikut sebelum release pertama:
+
+- `CARGO_REGISTRY_TOKEN` — API token dari crates.io.
+- `NPM_TOKEN` — access token npm yang memiliki izin publish package.
+
+Workflow memvalidasi bahwa version pada tag, `Cargo.toml`, dan `package.json`
+sama. GitHub prerelease dipublikasikan ke npm menggunakan dist-tag `next`;
+release biasa menggunakan dist-tag `latest`.
