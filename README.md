@@ -7,6 +7,13 @@ fingerprints with the DigitalPersona **U.are.U 4500** USB reader
 The plugin communicates with the reader through `nusb` and uses MINDTCT and
 BOZORTH3 from `fprint-pipeline` for minutiae extraction and matching.
 
+> **Pure Rust implementation:** this plugin communicates directly with the USB
+> reader and processes fingerprints entirely in Rust. It does not use a bridge
+> to a native library, vendor SDK, external fingerprint service, or additional
+> runtime. No proprietary DigitalPersona driver needs to be installed. On
+> Windows, the reader only needs to be associated with the built-in WinUSB
+> driver; Linux may require a udev permission rule.
+
 ## Installation
 
 ### Minimum requirements
@@ -79,9 +86,9 @@ Add `fingerprint:default` to a capability file such as
 
 | Platform | Requirement |
 | --- | --- |
-| macOS | The vendor-class reader can normally be accessed without `sudo`. |
-| Linux | Add a udev rule for USB device `05ba:000a` and ensure `fprintd` is not using the reader. |
-| Windows | Configure the reader to use the WinUSB driver. |
+| macOS | No additional driver is required. The vendor-class reader can normally be accessed without `sudo`. |
+| Linux | No additional driver is required. Add a udev permission rule for USB device `05ba:000a` and ensure `fprintd` is not using the reader. |
+| Windows | No proprietary driver is required. Associate the reader with the WinUSB driver included with Windows. |
 
 ## Usage
 
