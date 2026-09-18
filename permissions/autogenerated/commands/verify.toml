@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-verify"
+description = "Enables the verify command without any pre-configured scope."
+commands.allow = ["verify"]
+
+[[permission]]
+identifier = "deny-verify"
+description = "Denies the verify command without any pre-configured scope."
+commands.deny = ["verify"]

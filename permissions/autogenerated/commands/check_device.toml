@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-check-device"
+description = "Enables the check_device command without any pre-configured scope."
+commands.allow = ["check_device"]
+
+[[permission]]
+identifier = "deny-check-device"
+description = "Denies the check_device command without any pre-configured scope."
+commands.deny = ["check_device"]

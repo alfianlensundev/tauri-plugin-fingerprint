@@ -1,0 +1,11 @@
+[default]
+description = "Default permissions for the fingerprint plugin"
+permissions = [
+  "allow-check-device",
+  "allow-get-device-info",
+  "allow-capture",
+  "allow-capture-frames",
+  "allow-enroll",
+  "allow-verify",
+  "allow-identify",
+]

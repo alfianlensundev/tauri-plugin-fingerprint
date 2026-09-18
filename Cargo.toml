@@ -1,0 +1,23 @@
+[package]
+name = "tauri-plugin-fingerprint"
+version = "0.1.0"
+authors = ["Alfian Lensun"]
+description = "Tauri plugin for DigitalPersona U.are.U 4500 fingerprint readers"
+edition = "2021"
+rust-version = "1.77.2"
+exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
+links = "tauri-plugin-fingerprint"
+
+[dependencies]
+tauri = { version = "2.11.3" }
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "2"
+
+[target.'cfg(any(target_os = "macos", target_os = "linux", target_os = "windows"))'.dependencies]
+nusb = "0.2"
+fprint-pipeline = "0.1"
+base64 = "0.22"
+png = "0.17"
+
+[build-dependencies]
+tauri-plugin = { version = "2.6.3", features = ["build"] }
