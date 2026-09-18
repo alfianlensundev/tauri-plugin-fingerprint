@@ -18,8 +18,6 @@ require_command() {
 
 require_command git
 require_command node
-require_command npm
-require_command cargo
 require_command gh
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || fail "folder ini bukan repository Git"
@@ -33,6 +31,18 @@ if [[ -z "${version}" ]]; then
     read -r -p "Version release (contoh: 1.2.3): " version
 fi
 
+changelog="${*:2}"
+if [[ -z "${changelog}" ]]; then
+    echo "Changelog release (akhiri dengan baris kosong):"
+    changelog_lines=()
+    while IFS= read -r line && [[ -n "${line}" ]]; do
+        changelog_lines+=("${line}")
+    done
+    changelog="$(printf '%s\n' "${changelog_lines[@]}")"
+fi
+
+[[ -n "${changelog}" ]] || fail "changelog tidak boleh kosong"
+
 version="${version#v}"
 if [[ ! "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
     fail "version '${version}' bukan semantic version yang valid"
@@ -41,6 +51,7 @@ fi
 readonly VERSION="${version}"
 readonly TAG="v${VERSION}"
 readonly BRANCH="$(git branch --show-current)"
+readonly CHANGELOG="${changelog}"
 
 [[ -n "${BRANCH}" ]] || fail "release tidak dapat dibuat dari detached HEAD"
 
@@ -94,28 +105,12 @@ packageJson.version = version
 fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`)
 NODE
 
-if [[ -f package-lock.json ]]; then
-    npm install --package-lock-only --ignore-scripts
-fi
-
-echo "Menjalankan validasi..."
-cargo fmt --all -- --check
-cargo check
-cargo test
-npm run build
-
 git add Cargo.toml package.json
-
-for lockfile in Cargo.lock package-lock.json npm-shrinkwrap.json; do
-    if git ls-files --error-unmatch "${lockfile}" >/dev/null 2>&1; then
-        git add "${lockfile}"
-    fi
-done
 
 git diff --cached --quiet && fail "tidak ada perubahan version untuk di-commit"
 
 git commit -m "chore(release): ${TAG}"
-git tag -a "${TAG}" -m "Release ${TAG}"
+printf 'Release %s\n\n%s\n' "${TAG}" "${CHANGELOG}" | git tag -a "${TAG}" -F -
 
 echo "Mendorong commit dan tag ke origin..."
 git push origin "${BRANCH}"
@@ -124,14 +119,14 @@ git push origin "${TAG}"
 release_args=(
     "${TAG}"
     --verify-tag
-    --generate-notes
     --title "${TAG}"
+    --notes-file -
 )
 
 if [[ "${VERSION}" == *-* ]]; then
     release_args+=(--prerelease)
 fi
 
-gh release create "${release_args[@]}"
+gh release create "${release_args[@]}" <<< "${CHANGELOG}"
 
 echo "Release ${TAG} berhasil dibuat."

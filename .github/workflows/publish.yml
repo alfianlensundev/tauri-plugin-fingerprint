@@ -14,10 +14,19 @@ concurrency:
 jobs:
   verify:
     name: Verify release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout release tag
         uses: actions/checkout@v6
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -77,10 +86,19 @@ jobs:
   publish-cargo:
     name: Publish to crates.io
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout release tag
         uses: actions/checkout@v6
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1

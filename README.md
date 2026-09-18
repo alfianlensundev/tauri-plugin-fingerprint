@@ -132,22 +132,26 @@ Proyek ini didistribusikan dengan lisensi
 
 ## Membuat GitHub Release
 
-Pastikan working tree bersih, `gh` sudah login, dan remote `origin` mengarah ke
-repository GitHub. Jalankan dengan argumen version:
+Pastikan working tree bersih, `gh` sudah login dengan akses tulis, dan remote
+`origin` mengarah ke repository GitHub. Version dan changelog dapat diberikan
+langsung sebagai argumen:
 
 ```bash
-./scripts/release.sh 0.2.0
+./scripts/release.sh 0.2.0 "Tambah enroll JSON dan perbaikan build Linux"
 ```
 
-Atau jalankan tanpa argumen untuk memasukkan version melalui prompt:
+Atau jalankan tanpa argumen untuk mengisi version dan changelog melalui prompt.
+Changelog dapat terdiri dari beberapa baris dan diakhiri dengan satu baris
+kosong:
 
 ```bash
 ./scripts/release.sh
 ```
 
-Skrip akan memperbarui version Cargo dan npm, menjalankan test/build, membuat
-commit release, membuat tag `v<version>`, mendorong commit dan tag ke `origin`,
-lalu membuat GitHub Release dengan release notes otomatis.
+Skrip hanya menangani proses release Git: memperbarui version Cargo dan npm,
+membuat commit release, membuat tag `v<version>`, mendorong commit dan tag ke
+`origin`, lalu membuat GitHub Release dengan release notes otomatis. Seluruh
+test, build, dan publish dijalankan oleh GitHub Actions.
 
 Saat GitHub Release dipublikasikan, workflow `.github/workflows/publish.yml`
 akan memublikasikan crate ke crates.io dan package ke npm. Tambahkan repository
