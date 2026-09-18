@@ -168,10 +168,33 @@ test, build, dan publish dijalankan oleh GitHub Actions.
 
 Saat GitHub Release dipublikasikan, workflow `.github/workflows/publish.yml`
 akan memublikasikan crate ke crates.io dan package ke npm. Tambahkan repository
-secrets berikut sebelum release pertama:
+secret berikut sebelum release pertama:
 
 - `CARGO_REGISTRY_TOKEN` — API token dari crates.io.
-- `NPM_TOKEN` — access token npm yang memiliki izin publish package.
+
+Publikasi npm memakai Trusted Publishing (OIDC), sehingga tidak membutuhkan
+`NPM_TOKEN`. Karena Trusted Publisher hanya dapat diatur setelah package tersedia
+di npm, publikasikan version pertama sekali secara manual:
+
+```bash
+npm login
+bun install --frozen-lockfile
+npm run build
+npm publish --access public
+```
+
+Setelah package tersedia, buka pengaturan package `tauri-plugin-fingerprint` di
+npm dan tambahkan GitHub Actions sebagai Trusted Publisher dengan konfigurasi:
+
+- Organization or user: `alfianlensundev`
+- Repository: `tauri-plugin-fingerprint`
+- Workflow filename: `publish.yml`
+- Environment: kosong
+- Allowed actions: aktifkan `npm publish`
+
+Workflow sudah memiliki permission `id-token: write`. Setelah Trusted Publisher
+aktif, release berikutnya akan dipublikasikan tanpa token npm dan provenance
+akan dibuat otomatis oleh npm.
 
 Workflow memvalidasi bahwa version pada tag, `Cargo.toml`, dan `package.json`
 sama. GitHub prerelease dipublikasikan ke npm menggunakan dist-tag `next`;
