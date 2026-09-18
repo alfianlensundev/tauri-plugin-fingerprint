@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-fingerprint"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Alfian Lensun"]
 description = "Tauri plugin for DigitalPersona U.are.U 4500 fingerprint readers"
 license = "LGPL-2.1-or-later"
