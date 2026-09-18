@@ -26,14 +26,14 @@ directly with a desktop USB fingerprint reader.
 Run the following command from your application's `src-tauri` directory:
 
 ```bash
-cargo add tauri-plugin-fingerprint
+cargo add tauri-plugin-fingerprint@1.0.0
 ```
 
 Alternatively, add the crate manually to `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-fingerprint = "0.1"
+tauri-plugin-fingerprint = "1.0.0"
 ```
 
 ### 2. Register the plugin
@@ -50,15 +50,15 @@ tauri::Builder::default()
 ### 3. Install the JavaScript package
 
 ```bash
-npm install tauri-plugin-fingerprint
+npm install tauri-plugin-fingerprint@1.0.0
 ```
 
 You can also use another package manager:
 
 ```bash
-pnpm add tauri-plugin-fingerprint
-yarn add tauri-plugin-fingerprint
-bun add tauri-plugin-fingerprint
+pnpm add tauri-plugin-fingerprint@1.0.0
+yarn add tauri-plugin-fingerprint@1.0.0
+bun add tauri-plugin-fingerprint@1.0.0
 ```
 
 ### 4. Add the capability permission

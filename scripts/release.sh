@@ -59,9 +59,16 @@ current_cargo_version="$(
     node -e "const fs=require('fs'); const text=fs.readFileSync('Cargo.toml','utf8'); const match=text.match(/^version\\s*=\\s*\"([^\"]+)\"/m); if (!match) process.exit(1); process.stdout.write(match[1]);"
 )" || fail "version package tidak ditemukan di Cargo.toml"
 current_npm_version="$(node -p "require('./package.json').version")"
+current_docs_version="$(
+    node -e "const fs=require('fs'); const text=fs.readFileSync('README.md','utf8'); const match=text.match(/tauri-plugin-fingerprint = \"([^\"]+)\"/); if (!match) process.exit(1); process.stdout.write(match[1]);"
+)" || fail "version dependency tidak ditemukan di README.md"
 
 if [[ "${current_cargo_version}" != "${current_npm_version}" ]]; then
     fail "version Cargo (${current_cargo_version}) dan npm (${current_npm_version}) tidak sama"
+fi
+
+if [[ "${current_cargo_version}" != "${current_docs_version}" ]]; then
+    fail "version package (${current_cargo_version}) dan dokumentasi (${current_docs_version}) tidak sama"
 fi
 
 if [[ "${VERSION}" == "${current_cargo_version}" ]]; then
@@ -71,6 +78,7 @@ fi
 echo "Release ${TAG} dari branch ${BRANCH}"
 echo "  Cargo: ${current_cargo_version} -> ${VERSION}"
 echo "  npm:   ${current_npm_version} -> ${VERSION}"
+echo "  Docs:  ${current_docs_version} -> ${VERSION}"
 
 git fetch --tags origin
 
@@ -103,9 +111,37 @@ const packagePath = 'package.json'
 const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'))
 packageJson.version = version
 fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`)
+
+const readmePath = 'README.md'
+let readme = fs.readFileSync(readmePath, 'utf8')
+const documentationVersions = [
+    {
+        name: 'Cargo install command',
+        pattern: /(cargo add tauri-plugin-fingerprint@)[^\s`]+()/g,
+    },
+    {
+        name: 'Cargo dependency',
+        pattern: /(tauri-plugin-fingerprint = ")[^"]+("\s*)/g,
+    },
+    {
+        name: 'JavaScript install commands',
+        pattern: /((?:npm install|pnpm add|yarn add|bun add) tauri-plugin-fingerprint@)[^\s`]+()/g,
+    },
+]
+
+for (const documentationVersion of documentationVersions) {
+    if (!documentationVersion.pattern.test(readme)) {
+        throw new Error(`${documentationVersion.name} tidak ditemukan di README.md`)
+    }
+
+    documentationVersion.pattern.lastIndex = 0
+    readme = readme.replace(documentationVersion.pattern, `$1${version}$2`)
+}
+
+fs.writeFileSync(readmePath, readme)
 NODE
 
-git add Cargo.toml package.json
+git add Cargo.toml package.json README.md
 
 git diff --cached --quiet && fail "tidak ada perubahan version untuk di-commit"
 
